@@ -50,9 +50,9 @@ void start_event_loop() {
     ESP_ERROR_CHECK(esp_event_handler_instance_register_with(global_loop, GLOBAL_EVENTS, GLOBAL_ITERATION_EVENT, task_iteration_handler, global_loop, NULL));
 
     // Create the event source task
-    TaskHandle_t task_event_source_hdl;
-    ESP_LOGI(TAG, "starting event source");
-    xTaskCreate(task_event_source, "task_event_source", 3072, NULL, uxTaskPriorityGet(NULL) + 1, &task_event_source_hdl);
+    // TaskHandle_t task_event_source_hdl;
+    // ESP_LOGI(TAG, "starting event source");
+    // xTaskCreate(task_event_source, "task_event_source", 3072, NULL, uxTaskPriorityGet(NULL) + 1, &task_event_source_hdl);
 }
 
 void create_iteration_event(const int iteration) {
