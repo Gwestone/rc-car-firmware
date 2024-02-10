@@ -7,9 +7,19 @@ ESP_EVENT_DEFINE_BASE(GLOBAL_EVENTS);
 
 static void task_iteration_handler(void* handler_args, esp_event_base_t base, int32_t id, void* event_data)
 {
-    int iteration = *((int*) event_data);
-
-    ESP_LOGI(TAG, "handling %s:%s from loop_with_task, iteration %d", base, "TASK_ITERATION_EVENT", iteration);
+    switch (id) {
+        case GLOBAL_ITERATION_EVENT:
+                const int iteration = *((int*) event_data);
+                ESP_LOGI(TAG, "handling %s:%s from global_event_loop, iteration %d", base, "GLOBAL_ITERATION_EVENT", iteration);
+            break;
+        case GLOBAL_MOVEMENT_EVENT:
+                enum direction_t direction = *((int*)event_data);
+                ESP_LOGI(TAG, "handling %s:%s from global_event_loop, direction %s", base, "GLOBAL_MOVEMENT_EVENT", DIRECTION_STRING[direction]);
+            break;
+        default:
+            ESP_LOGE(TAG, "cant handle event %s:%s from global_event_loop, with data address: %p", base, "UNDEFINDED", event_data);
+            break;
+    }
 }
 
 static void task_event_source(void* args)
@@ -47,7 +57,7 @@ void start_event_loop() {
 
     // Register the handler for task iteration event. Notice that the same handler is used for handling event on different loops.
     // The loop handle is provided as an argument in order for this example to display the loop the handler is being run on.
-    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(global_loop, GLOBAL_EVENTS, GLOBAL_ITERATION_EVENT, task_iteration_handler, global_loop, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(global_loop, GLOBAL_EVENTS, ESP_EVENT_ANY_ID, task_iteration_handler, global_loop, NULL));
 
     // Create the event source task
     // TaskHandle_t task_event_source_hdl;
@@ -57,4 +67,8 @@ void start_event_loop() {
 
 void create_iteration_event(const int iteration) {
     ESP_ERROR_CHECK(esp_event_post_to(global_loop, GLOBAL_EVENTS, GLOBAL_ITERATION_EVENT, &iteration, sizeof(iteration), portMAX_DELAY));
+}
+
+void create_movement_event(const enum direction_t direction) {
+    ESP_ERROR_CHECK(esp_event_post_to(global_loop, GLOBAL_EVENTS, GLOBAL_MOVEMENT_EVENT, &direction, sizeof(direction), portMAX_DELAY));
 }
