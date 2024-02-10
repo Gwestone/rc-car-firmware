@@ -1,0 +1,6 @@
+build/
+sdkconfig
+sdkconfig.old
+cmake-build-debug-esp32/
+.idea/
+sdkconfig.ci
