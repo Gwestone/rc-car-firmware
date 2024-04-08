@@ -1,4 +1,5 @@
 #include "http.h"
+#include "event.h"
 
 // Asynchronous response data structure
 struct async_resp_arg
@@ -80,7 +81,7 @@ esp_err_t ws_handler(httpd_req_t *req) {
         }
         ESP_LOGI(TAG, "Got packet with message: %s", wsFrame.payload);
         for (int i = 0; i < wsFrame.len; ++i) {
-
+            esp_event_post_to(global_loop, GLOBAL_EVENTS, GLOBAL_MOVEMENT_EVENT, &wsFrame.payload[i], sizeof(char), portMAX_DELAY);
         }
     }
     ESP_LOGI(TAG, "Packet type: %d", wsFrame.type);

@@ -13,6 +13,7 @@ extern "C" {
 #define TASK_ITERATIONS_COUNT        10      // number of times the task iterates
 #define TASK_PERIOD                  500     // period of the task loop in milliseconds
 
+    extern esp_event_loop_handle_t global_loop;
     ESP_EVENT_DECLARE_BASE(GLOBAL_EVENTS);         // declaration of the task events family
 
     enum {

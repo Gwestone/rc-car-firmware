@@ -13,8 +13,8 @@ static void task_iteration_handler(void* handler_args, esp_event_base_t base, in
                 ESP_LOGI(TAG, "handling %s:%s from global_event_loop, iteration %d", base, "GLOBAL_ITERATION_EVENT", iteration);
             break;
         case GLOBAL_MOVEMENT_EVENT:
-                enum direction_t direction = *((int*)event_data);
-                ESP_LOGI(TAG, "handling %s:%s from global_event_loop, direction %s", base, "GLOBAL_MOVEMENT_EVENT", DIRECTION_STRING[direction]);
+                char direction = *((char*)event_data);
+                ESP_LOGI(TAG, "handling %s:%s from global_event_loop, direction %c", base, "GLOBAL_MOVEMENT_EVENT", direction);
             break;
         default:
             ESP_LOGE(TAG, "cant handle event %s:%s from global_event_loop, with data address: %p", base, "UNDEFINDED", event_data);
