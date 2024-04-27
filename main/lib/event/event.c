@@ -12,10 +12,6 @@ static void task_iteration_handler(void* handler_args, esp_event_base_t base, in
                 const int iteration = *((int*) event_data);
                 ESP_LOGI(TAG, "handling %s:%s from global_event_loop, iteration %d", base, "GLOBAL_ITERATION_EVENT", iteration);
             break;
-        case GLOBAL_MOVEMENT_EVENT:
-                char direction = *((char*)event_data);
-                ESP_LOGI(TAG, "handling %s:%s from global_event_loop, direction %c", base, "GLOBAL_MOVEMENT_EVENT", direction);
-            break;
         default:
             ESP_LOGE(TAG, "cant handle event %s:%s from global_event_loop, with data address: %p", base, "UNDEFINDED", event_data);
             break;
@@ -57,7 +53,8 @@ void start_event_loop() {
 
     // Register the handler for task iteration event. Notice that the same handler is used for handling event on different loops.
     // The loop handle is provided as an argument in order for this example to display the loop the handler is being run on.
-    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(global_loop, GLOBAL_EVENTS, ESP_EVENT_ANY_ID, task_iteration_handler, global_loop, NULL));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register_with(global_loop, GLOBAL_EVENTS, ESP_EVENT_ANY_ID,
+                                                             task_iteration_handler, global_loop, NULL));
 
     // Create the event source task
     // TaskHandle_t task_event_source_hdl;

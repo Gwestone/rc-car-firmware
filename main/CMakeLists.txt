@@ -12,4 +12,7 @@ idf_component_register( SRCS "main.c"
 
                         SRCS "lib/wifi/wifi.c"
                         INCLUDE_DIRS "lib/wifi"
+
+                        SRCS "lib/motor/motor.c"
+                        INCLUDE_DIRS "lib/motor"
 )
